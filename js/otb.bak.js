@@ -52,24 +52,24 @@
 	
 
 	function createDiv(appendTo, cls, left, top) {
-		var div = document.createElement('div'); 
+		var div = document.createElement('div');
 
 		if(cls){
-			div.setAttribute("class", cls); 
+			div.setAttribute("class", cls);
 		}
 
 		if((left || top) || (left && top)){
 			div.style.position = "absolute";
-			appendTo.style.position = "relative"; 
+			appendTo.style.position = "relative";
 
-			if(left){ 
-				div.style.left = left; 
+			if(left){
+				div.style.left = left;
 			}else{
 				div.style.left = 0;
 			}
 
-			if(top){ 
-				div.style.top = top; 
+			if(top){
+				div.style.top = top;
 			}else{
 				div.style.top = 0;
 			}
