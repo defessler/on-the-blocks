@@ -12,7 +12,7 @@ var OTB = (function(){
 		var args = Array.prototype.slice.call(arguments);
 
 		// name will always be the first argument, remove first argument from array and assign to name.
-		name = args.shift(); 
+		name = args.shift();
 		// factory will always be the last argument, remove last argument from array and assign to factory.
 		factory = args.pop();
 		// deps is optional. At this point it would be the only argument remaining. If it doesn't exist
@@ -43,7 +43,7 @@ var OTB = (function(){
 
 	return { // Expose specific properites
 		define: define,
-		require: require            
+		require: require
 	};
 
 }).call();

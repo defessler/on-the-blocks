@@ -115,6 +115,47 @@
 		return GameBoard;
 	});
 
+	OTB.define("collision", function(){
+
+		function collisionCheck(shapePos, checkPos, board, checkDir){
+			checkDir = checkDir || "";
+
+			var r = 0, c = 0;
+
+			for(var i = 0; i < checkPos.length; i += 1){
+
+				if(board[shapePos[i]+checkPos[i]] > 0 ||
+					(shapePos[i] / board.lengthX)+1 >= board.lengthY){
+					return false;
+				}
+
+				if(checkDir === "horizontal"){
+					if((shapePos[i] % board.lengthX) + checkPos[i] < 0 ||
+						(shapePos[i] % board.lengthX) + checkPos[i] >= board.lengthX){
+						return false;
+					}
+				}
+				//console.log((shapePos[i] % board.lengthX), checkPos, shapePos);
+				if(checkDir === "rotate"){
+					
+					console.log(rotate1);
+
+					if(rotate1 === -1){
+						return 1;
+					}else if(rotate1 === 10){
+						return -1;
+					}else{
+						return 0;
+					}
+				}
+			}
+
+
+			return true;
+		}
+		return collisionCheck;
+	});
+
 	OTB.define("draw", function(){
 		function draw(data, drawType){
 			var i, rowLength = 0; gameString = "", x = 0;

@@ -1,5 +1,5 @@
 (function(){
-	OTB.require(["GameBoard", "draw"], function(M) {
+	OTB.require(["GameBoard", "draw", "collision"], function(M) {
 		var gBoard = new M.GameBoard(10, 20);
 		var i, count = 0, count2 = 0;
 
@@ -27,7 +27,7 @@
 
 			document.onkeydown = function(e){
 				keyCode = e.keyCode;
-				console.log(keyCode);
+				//console.log(keyCode);
 				
 			};
 			document.onkeyup = function(e){
@@ -39,15 +39,11 @@
 
 				
 				count += 1;
-				if(count >= 10){
-					for(i = 0; i < shape.currentPos.length; i += 1){
-						if((shape.currentPos[i]/ gBoard.lengthX)+1 > gBoard.lengthY ||
-							(gBoard[shape.currentPos[i]+gBoard.lengthX] >= 1)
-						){
-							move = false;
-						}
+				if(count >= 20){
 
-					}
+					
+					move = M.collision(shape.currentPos, [10, 10, 10, 10], gBoard);
+
 					if(move){
 						for(i = 0; i < shape.currentPos.length; i += 1){
 							shape.currentPos[i] += 10;
@@ -77,16 +73,9 @@
 				count2 += 1;
 				if(count2 >= 5){
 					count2 = 0;
+
 					if(keyCode === 37){ //left
-						for(i = 0; i < shape.currentPos.length; i += 1){
-							if(shape.currentPos[i] % gBoard.lengthX <= 0 ||
-								gBoard[shape.currentPos[i]-1] >= 1){
-								moveLeft = false;
-								break;
-							}else{
-								moveLeft = true;
-							}
-						}
+						moveLeft = M.collision(shape.currentPos, [-1, -1, -1, -1], gBoard, "horizontal");
 						if(moveLeft){
 							for(i = 0; i < shape.currentPos.length; i += 1){
 								shape.currentPos[i] -= 1;
@@ -95,34 +84,35 @@
 						
 					}
 					if(keyCode === 39){ //left
-						for(i = 0; i < shape.currentPos.length; i += 1){
-							if(shape.currentPos[i] % gBoard.lengthX >= gBoard.lengthX - 1 ||
-								gBoard[shape.currentPos[i]+1] >= 1){
-								moveRight = false;
-								break;
-							}else{
-								moveRight = true;
-							}
-						}
+						moveRight = M.collision(shape.currentPos, [1, 1, 1, 1], gBoard, "horizontal");
 						if(moveRight){
 							for(i = 0; i < shape.currentPos.length; i += 1){
 								shape.currentPos[i] += 1;
 							}
 						}
 					}
+
 					if(keyCode === 38){ //up
+						rotate = M.collision(shape.currentPos, [10, 10, 10, 10], gBoard);
+						var rotate1;
+
 						for(i = 0; i < shape.currentPos.length; i += 1){
-							if(shape.currentPos[i] % gBoard.lengthX >= gBoard.lengthX - 1 ||
-								gBoard[shape.currentPos[i]+1] >= 1){
-								rotate = false;
+							rotate1 = (shape.currentPos[i] % gBoard.lengthX) + (shape.rotateOffsets[offset][i] % gBoard.lengthX);
+
+							if(rotate1 < 0 && rotate1 > -2){
+								offs = 1;
 								break;
+							}else if(rotate1 > 9){
+								offs = -1;
 							}else{
-								rotate = true;
+								offs = 0;
 							}
 						}
+
 						if(rotate){
 							for(i = 0; i < shape.currentPos.length; i += 1){
 								shape.currentPos[i] +=  shape.rotateOffsets[offset][i];
+								shape.currentPos[i] += offs;
 							}
 							offset += 1;
 
