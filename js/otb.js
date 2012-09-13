@@ -23,7 +23,8 @@
 			var keyCode = 0;
 			var offset = 0;
 			var rowCount = 0;
-			var offs = [];
+			var offs = 0;
+			var rotate1 = 0;
 
 			document.onkeydown = function(e){
 				keyCode = e.keyCode;
@@ -38,7 +39,7 @@
 				requestAnimationFrame(animate);
 
 				
-				count += 1;
+				//count += 1;
 				if(count >= 20){
 
 					
@@ -83,7 +84,7 @@
 						}
 						
 					}
-					if(keyCode === 39){ //left
+					if(keyCode === 39){ //right
 						moveRight = M.collision(shape.currentPos, [1, 1, 1, 1], gBoard, "horizontal");
 						if(moveRight){
 							for(i = 0; i < shape.currentPos.length; i += 1){
@@ -93,34 +94,21 @@
 					}
 
 					if(keyCode === 38){ //up
-						rotate = M.collision(shape.currentPos, [10, 10, 10, 10], gBoard);
-						var rotate1;
+						offs = M.collision(shape.currentPos, shape.rotateOffsets[offset], gBoard, "rotate");
+
+						//console.log(offs);
 
 						for(i = 0; i < shape.currentPos.length; i += 1){
-							rotate1 = (shape.currentPos[i] % gBoard.lengthX) + (shape.rotateOffsets[offset][i] % gBoard.lengthX);
-
-							if(rotate1 < 0 && rotate1 > -2){
-								offs = 1;
-								break;
-							}else if(rotate1 > 9){
-								offs = -1;
-							}else{
-								offs = 0;
-							}
+							shape.currentPos[i] +=  shape.rotateOffsets[offset][i];
+							shape.currentPos[i] += offs;
 						}
+						offset += 1;
 
-						if(rotate){
-							for(i = 0; i < shape.currentPos.length; i += 1){
-								shape.currentPos[i] +=  shape.rotateOffsets[offset][i];
-								shape.currentPos[i] += offs;
-							}
-							offset += 1;
-
-							if(offset > 3){
-								offset = 0;
-							}
+						if(offset > 3){
+							offset = 0;
 						}
 					}
+					
 				}
 				gBoard.cursor.clear();
 				for(i = 0; i < shape.currentPos.length; i +=1){

@@ -120,7 +120,7 @@
 		function collisionCheck(shapePos, checkPos, board, checkDir){
 			checkDir = checkDir || "";
 
-			var r = 0, c = 0;
+			var r = 0, c = 0, rotateOffset = 0, returnOffset = 0;
 
 			for(var i = 0; i < checkPos.length; i += 1){
 
@@ -135,22 +135,19 @@
 						return false;
 					}
 				}
-				//console.log((shapePos[i] % board.lengthX), checkPos, shapePos);
 				if(checkDir === "rotate"){
-					
-					console.log(rotate1);
-
-					if(rotate1 === -1){
-						return 1;
-					}else if(rotate1 === 10){
-						return -1;
-					}else{
-						return 0;
+					rotateOffset = (shapePos[i] % board.lengthX) + (checkPos[i] % board.lengthX);
+					console.log(rotateOffset);
+					if(rotateOffset < 0 && rotateOffset > -2){
+						returnOffset = 1;
+						break;
+					}else if(rotateOffset > 9){
+						returnOffset = -1;
+						break;
 					}
+					return returnOffset;
 				}
 			}
-
-
 			return true;
 		}
 		return collisionCheck;
