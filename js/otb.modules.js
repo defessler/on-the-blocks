@@ -15,9 +15,9 @@
 	OTB.define("createElements", function(M){
 
 		function createElements(appendTo, cls, left, top) {
-			
+
 			var div = document.createElement('div');
-			
+
 			appendTo = document.getElementById(appendTo);
 
 			if(cls){
@@ -59,7 +59,7 @@
 			this.lengthX = lengthX;
 			this.lengthY = lengthY;
 			this.cursor = M.subclass(this);
-			
+
 		}
 
 		var proto = GameBoard.prototype = M.subclass(Array.prototype);
@@ -79,7 +79,7 @@
 				}
 				console.log('defined');
 			}
-			
+
 		};
 
 		proto.clear = function() {
@@ -135,20 +135,26 @@
 						return false;
 					}
 				}
+				
 				if(checkDir === "rotate"){
 					rotateOffset = (shapePos[i] % board.lengthX) + (checkPos[i] % board.lengthX);
-					console.log(rotateOffset);
-					if(rotateOffset < 0 && rotateOffset > -2){
+
+					if(rotateOffset === -1 && (shapePos[i] % board.lengthX) >= 0){
 						returnOffset = 1;
-						break;
-					}else if(rotateOffset > 9){
+						return returnOffset;
+					}else if(rotateOffset === 10 && (shapePos[i] % board.lengthX) === 9){
 						returnOffset = -1;
-						break;
+						return returnOffset;
 					}
-					return returnOffset;
 				}
 			}
-			return true;
+
+			if(checkDir !== "rotate"){
+				return true;
+			}else{
+				return 0;
+			}
+
 		}
 		return collisionCheck;
 	});
@@ -174,7 +180,7 @@
 					}
 
 				}
-			
+
 				console.log(gameString);
 			}
 

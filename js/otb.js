@@ -29,20 +29,20 @@
 			document.onkeydown = function(e){
 				keyCode = e.keyCode;
 				//console.log(keyCode);
-				
+
 			};
 			document.onkeyup = function(e){
 				keyCode = 0;
 			};
-						
+
 			function animate(){
 				requestAnimationFrame(animate);
 
-				
-				//count += 1;
+
+				count += 1;
 				if(count >= 20){
 
-					
+
 					move = M.collision(shape.currentPos, [10, 10, 10, 10], gBoard);
 
 					if(move){
@@ -82,7 +82,7 @@
 								shape.currentPos[i] -= 1;
 							}
 						}
-						
+
 					}
 					if(keyCode === 39){ //right
 						moveRight = M.collision(shape.currentPos, [1, 1, 1, 1], gBoard, "horizontal");
@@ -96,19 +96,18 @@
 					if(keyCode === 38){ //up
 						offs = M.collision(shape.currentPos, shape.rotateOffsets[offset], gBoard, "rotate");
 
-						//console.log(offs);
-
 						for(i = 0; i < shape.currentPos.length; i += 1){
 							shape.currentPos[i] +=  shape.rotateOffsets[offset][i];
 							shape.currentPos[i] += offs;
 						}
+
 						offset += 1;
 
 						if(offset > 3){
 							offset = 0;
 						}
 					}
-					
+
 				}
 				gBoard.cursor.clear();
 				for(i = 0; i < shape.currentPos.length; i +=1){
