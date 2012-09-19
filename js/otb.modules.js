@@ -120,19 +120,22 @@
 		function collisionCheck(shapePos, checkPos, board, checkDir){
 			checkDir = checkDir || "";
 
-			var r = 0, c = 0, rotateOffset = 0, returnOffset = 0;
+			var r = 0, c = 0, returnOffset = 0;
+			var collisionData = {};
 
 			for(var i = 0; i < checkPos.length; i += 1){
 
 				if(board[shapePos[i]+checkPos[i]] > 0 ||
 					(shapePos[i] / board.lengthX)+1 >= board.lengthY){
-					return false;
+					collisionData.hasCollided = true;
+					return collisionData;
 				}
 
 				if(checkDir === "horizontal"){
 					if((shapePos[i] % board.lengthX) + checkPos[i] < 0 ||
 						(shapePos[i] % board.lengthX) + checkPos[i] >= board.lengthX){
-						return false;
+						collisionData.hasCollided = true;
+						return collisionData;
 					}
 				}
 				
@@ -140,20 +143,19 @@
 					rotateOffset = (shapePos[i] % board.lengthX) + (checkPos[i] % board.lengthX);
 
 					if(rotateOffset === -1 && (shapePos[i] % board.lengthX) >= 0){
-						returnOffset = 1;
-						return returnOffset;
+						collisionData.rotateOffset = 1;
+						return collisionData;
 					}else if(rotateOffset === 10 && (shapePos[i] % board.lengthX) === 9){
-						returnOffset = -1;
-						return returnOffset;
+						collisionData.rotateOffset = -1;
+						return collisionData;
 					}
 				}
 			}
 
-			if(checkDir !== "rotate"){
-				return true;
-			}else{
-				return 0;
-			}
+			collisionData.hasCollided = false;
+			collisionData.rotateOffset = 0;
+			
+			return collisionData;
 
 		}
 		return collisionCheck;

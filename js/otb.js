@@ -9,10 +9,10 @@
 				originalPos: [4, 14, 24, 25],
 				currentPos: [4, 14, 24, 25],
 				rotateOffsets:[
-					[11, 0, -11, -2 ],
-					[9, 0, -9, -20],
-					[-11, 0, 11, 2 ],
-					[-9, 0, 9, 20]
+					[  11,   0, -11,  -2],
+					[   9,   0,  -9, -20],
+					[ -11,   0,  11,   2],
+					[  -9,   0,   9,  20]
 				]
 			} ;
 
@@ -23,7 +23,7 @@
 			var keyCode = 0;
 			var offset = 0;
 			var rowCount = 0;
-			var offs = 0;
+			var collisionData = {};
 			var rotate1 = 0;
 
 			document.onkeydown = function(e){
@@ -40,10 +40,12 @@
 
 
 				count += 1;
-				if(count >= 20){
+				if(count >= 15){
 
 
-					move = M.collision(shape.currentPos, [10, 10, 10, 10], gBoard);
+					collisionData = M.collision(shape.currentPos, [10, 10, 10, 10], gBoard);
+
+					move = !collisionData.hasCollided;
 
 					if(move){
 						for(i = 0; i < shape.currentPos.length; i += 1){
@@ -76,8 +78,9 @@
 					count2 = 0;
 
 					if(keyCode === 37){ //left
-						moveLeft = M.collision(shape.currentPos, [-1, -1, -1, -1], gBoard, "horizontal");
-						if(moveLeft){
+						collisionData = M.collision(shape.currentPos, [-1, -1, -1, -1], gBoard, "horizontal");
+
+						if(!collisionData.hasCollided){
 							for(i = 0; i < shape.currentPos.length; i += 1){
 								shape.currentPos[i] -= 1;
 							}
@@ -85,8 +88,8 @@
 
 					}
 					if(keyCode === 39){ //right
-						moveRight = M.collision(shape.currentPos, [1, 1, 1, 1], gBoard, "horizontal");
-						if(moveRight){
+						collisionData = M.collision(shape.currentPos, [1, 1, 1, 1], gBoard, "horizontal");
+						if(!collisionData.hasCollided){
 							for(i = 0; i < shape.currentPos.length; i += 1){
 								shape.currentPos[i] += 1;
 							}
@@ -94,17 +97,19 @@
 					}
 
 					if(keyCode === 38){ //up
-						offs = M.collision(shape.currentPos, shape.rotateOffsets[offset], gBoard, "rotate");
+						collisionData = M.collision(shape.currentPos, shape.rotateOffsets[offset], gBoard, "rotate");
 
-						for(i = 0; i < shape.currentPos.length; i += 1){
-							shape.currentPos[i] +=  shape.rotateOffsets[offset][i];
-							shape.currentPos[i] += offs;
-						}
+						if(!collisionData.hasCollided){
+							for(i = 0; i < shape.currentPos.length; i += 1){
+								shape.currentPos[i] +=  shape.rotateOffsets[offset][i];
+								shape.currentPos[i] += collisionData.rotateOffset;
+							}
 
-						offset += 1;
+							offset += 1;
 
-						if(offset > 3){
-							offset = 0;
+							if(offset > 3){
+								offset = 0;
+							}
 						}
 					}
 
