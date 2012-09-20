@@ -7,7 +7,7 @@
 		(function(){
 			var shape = {
 				originalPos: [4, 14, 24, 25],
-				currentPos: [4, 14, 24, 25],
+				currentPos: [175, 185, 195, 196],
 				rotateOffsets:[
 					[  11,   0, -11,  -2],
 					[   9,   0,  -9, -20],
@@ -28,8 +28,6 @@
 
 			document.onkeydown = function(e){
 				keyCode = e.keyCode;
-				//console.log(keyCode);
-
 			};
 			document.onkeyup = function(e){
 				keyCode = 0;
@@ -38,14 +36,13 @@
 			function animate(){
 				requestAnimationFrame(animate);
 
-
 				count += 1;
-				if(count >= 15){
+				if(count >= 30){
 
 
 					collisionData = M.collision(shape.currentPos, [10, 10, 10, 10], gBoard);
 
-					move = !collisionData.hasCollided;
+					move = collisionData.vertical;
 
 					if(move){
 						for(i = 0; i < shape.currentPos.length; i += 1){
@@ -80,7 +77,7 @@
 					if(keyCode === 37){ //left
 						collisionData = M.collision(shape.currentPos, [-1, -1, -1, -1], gBoard, "horizontal");
 
-						if(!collisionData.hasCollided){
+						if(collisionData.horizontal){
 							for(i = 0; i < shape.currentPos.length; i += 1){
 								shape.currentPos[i] -= 1;
 							}
@@ -89,7 +86,7 @@
 					}
 					if(keyCode === 39){ //right
 						collisionData = M.collision(shape.currentPos, [1, 1, 1, 1], gBoard, "horizontal");
-						if(!collisionData.hasCollided){
+						if(collisionData.horizontal){
 							for(i = 0; i < shape.currentPos.length; i += 1){
 								shape.currentPos[i] += 1;
 							}
@@ -99,7 +96,7 @@
 					if(keyCode === 38){ //up
 						collisionData = M.collision(shape.currentPos, shape.rotateOffsets[offset], gBoard, "rotate");
 
-						if(!collisionData.hasCollided){
+						if(collisionData.rotate){
 							for(i = 0; i < shape.currentPos.length; i += 1){
 								shape.currentPos[i] +=  shape.rotateOffsets[offset][i];
 								shape.currentPos[i] += collisionData.rotateOffset;

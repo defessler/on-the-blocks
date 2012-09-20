@@ -121,21 +121,29 @@
 			checkDir = checkDir || "";
 
 			var r = 0, c = 0, returnOffset = 0;
-			var collisionData = {};
+			var collisionData = {
+				vertical: true,
+				horizontal: true,
+				rotate: true,
+				rotateOffset: 0
+			};
 
 			for(var i = 0; i < checkPos.length; i += 1){
 
-				if(board[shapePos[i]+checkPos[i]] > 0 ||
-					(shapePos[i] / board.lengthX)+1 >= board.lengthY){
-					collisionData.hasCollided = true;
-					return collisionData;
+				if((shapePos[i] / board.lengthX)+1 >= board.lengthY){
+					collisionData.vertical = false;
+				}
+
+				if(board[shapePos[i]+checkPos[i]] > 0){
+					collisionData.vertical = false;
+					collisionData.horizontal = false;
+					collisionData.rotate = false;
 				}
 
 				if(checkDir === "horizontal"){
 					if((shapePos[i] % board.lengthX) + checkPos[i] < 0 ||
 						(shapePos[i] % board.lengthX) + checkPos[i] >= board.lengthX){
-						collisionData.hasCollided = true;
-						return collisionData;
+						collisionData.horizontal = false;
 					}
 				}
 				
@@ -144,17 +152,12 @@
 
 					if(rotateOffset === -1 && (shapePos[i] % board.lengthX) >= 0){
 						collisionData.rotateOffset = 1;
-						return collisionData;
 					}else if(rotateOffset === 10 && (shapePos[i] % board.lengthX) === 9){
 						collisionData.rotateOffset = -1;
-						return collisionData;
 					}
 				}
 			}
 
-			collisionData.hasCollided = false;
-			collisionData.rotateOffset = 0;
-			
 			return collisionData;
 
 		}
