@@ -76,7 +76,7 @@
 
 					if(keyCode === 37){ //left
 						collisionData = M.collision(shape.currentPos, [-1, -1, -1, -1], gBoard, "horizontal");
-
+						console.log(shape);
 						if(collisionData.horizontal){
 							for(i = 0; i < shape.currentPos.length; i += 1){
 								shape.currentPos[i] -= 1;
@@ -95,7 +95,7 @@
 
 					if(keyCode === 38){ //up
 						collisionData = M.collision(shape.currentPos, shape.rotateOffsets[offset], gBoard, "rotate");
-
+						console.log(shape);
 						if(collisionData.rotate){
 							for(i = 0; i < shape.currentPos.length; i += 1){
 								shape.currentPos[i] +=  shape.rotateOffsets[offset][i];
