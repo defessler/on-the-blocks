@@ -7,7 +7,7 @@
 		(function(){
 			var shape = {
 				originalPos: [4, 14, 24, 25],
-				currentPos: [175, 185, 195, 196],
+				currentPos: [4, 14, 24, 25],
 				rotateOffsets:[
 					[  11,   0, -11,  -2],
 					[   9,   0,  -9, -20],
@@ -42,9 +42,7 @@
 
 					collisionData = M.collision(shape.currentPos, [10, 10, 10, 10], gBoard);
 
-					move = collisionData.vertical;
-
-					if(move){
+					if(collisionData.vertical){
 						for(i = 0; i < shape.currentPos.length; i += 1){
 							shape.currentPos[i] += 10;
 						}
@@ -65,7 +63,7 @@
 						gBoard.cursor.apply();
 						offset = 0;
 						shape.currentPos = shape.originalPos.slice(0);
-						move = true;
+						collisionData.vertical = true;
 					}
 					//console.log(Math.floor(shape[3] / gBoard.lengthX-2));
 					count = 0;
@@ -75,8 +73,8 @@
 					count2 = 0;
 
 					if(keyCode === 37){ //left
-						collisionData = M.collision(shape.currentPos, [-1, -1, -1, -1], gBoard, "horizontal");
-						console.log(shape);
+						collisionData = M.collision(shape.currentPos, [-1, -1, -1, -1], gBoard);
+						//console.log(shape.currentPos);
 						if(collisionData.horizontal){
 							for(i = 0; i < shape.currentPos.length; i += 1){
 								shape.currentPos[i] -= 1;
@@ -85,7 +83,8 @@
 
 					}
 					if(keyCode === 39){ //right
-						collisionData = M.collision(shape.currentPos, [1, 1, 1, 1], gBoard, "horizontal");
+						collisionData = M.collision(shape.currentPos, [1, 1, 1, 1], gBoard);
+						//console.log(shape.currentPos);
 						if(collisionData.horizontal){
 							for(i = 0; i < shape.currentPos.length; i += 1){
 								shape.currentPos[i] += 1;
@@ -94,8 +93,8 @@
 					}
 
 					if(keyCode === 38){ //up
-						collisionData = M.collision(shape.currentPos, shape.rotateOffsets[offset], gBoard, "rotate");
-						console.log(shape);
+						collisionData = M.collision(shape.currentPos, shape.rotateOffsets[offset], gBoard);
+
 						if(collisionData.rotate){
 							for(i = 0; i < shape.currentPos.length; i += 1){
 								shape.currentPos[i] +=  shape.rotateOffsets[offset][i];

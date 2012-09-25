@@ -120,7 +120,7 @@
 		function collisionCheck(shapePos, checkPos, board, checkDir){
 			checkDir = checkDir || "";
 
-			var r = 0, c = 0, returnOffset = 0;
+			var rotateOffset = 0;
 			var collisionData = {
 				vertical: true,
 				horizontal: true,
@@ -134,34 +134,29 @@
 					collisionData.vertical = false;
 				}
 
-				if(board[shapePos[i]+checkPos[i]] > 0){
+				if(board[shapePos[i] + checkPos[i]] > 0){
 					collisionData.vertical = false;
 					collisionData.horizontal = false;
 					collisionData.rotate = false;
 				}
+				
+				if((shapePos[i] % board.lengthX) + checkPos[i] < 0 || (shapePos[i] % board.lengthX) + checkPos[i] >= board.lengthX){
+					collisionData.horizontal = false;
+				}
+			
+				rotateOffset = (shapePos[i] % board.lengthX) + (checkPos[i] % board.lengthX);
 
-				if(checkDir === "horizontal"){
-					if((shapePos[i] % board.lengthX) + checkPos[i] < 0 ||
-						(shapePos[i] % board.lengthX) + checkPos[i] >= board.lengthX){
-						collisionData.horizontal = false;
-					}
+				if(rotateOffset === -1 && (shapePos[i] % board.lengthX) >= 0){
+					collisionData.rotateOffset = 1;
+				}else if(rotateOffset === 10 && (shapePos[i] % board.lengthX) === 9){
+					collisionData.rotateOffset = -1;
 				}
 				
-				if(checkDir === "rotate"){
-					rotateOffset = (shapePos[i] % board.lengthX) + (checkPos[i] % board.lengthX);
-
-					if(rotateOffset === -1 && (shapePos[i] % board.lengthX) >= 0){
-						collisionData.rotateOffset = 1;
-					}else if(rotateOffset === 10 && (shapePos[i] % board.lengthX) === 9){
-						collisionData.rotateOffset = -1;
-					}
-				}
 			}
 
 			return collisionData;
-
 		}
-		
+
 		return collisionCheck;
 	});
 
@@ -176,7 +171,7 @@
 						gameString += "\n";
 					}
 
-					if(data.cursor[i] !== undefined &&
+					if( data.cursor[i] !== undefined &&
 						data.cursor[i] !== null &&
 						data.cursor[i] > 0
 					){
@@ -194,7 +189,7 @@
 			if(drawType === "dom"){
 				data.createDOM();
 				for(i = 0; i < data.length; i += 1){
-					if(data.cursor[i] !== undefined &&
+					if( data.cursor[i] !== undefined &&
 						data.cursor[i] !== null &&
 						data.cursor[i] > 0
 					){
