@@ -75,7 +75,7 @@
 					y = Math.floor(i / this.lengthX)*30;
 
 					this.el[i] = M.createElements("gameBoard", "sBlock", x, y);
-
+					//this.el[i].innerHTML = i;
 				}
 				console.log('defined');
 			}
@@ -130,7 +130,7 @@
 
 			for(var i = 0; i < checkPos.length; i += 1){
 
-				if((shapePos[i] / board.lengthX)+1 >= board.lengthY){
+				if((shapePos[i] / board.lengthX) + 1 >= board.lengthY){
 					collisionData.vertical = false;
 				}
 
@@ -140,7 +140,7 @@
 					collisionData.rotate = false;
 				}
 				
-				if((shapePos[i] % board.lengthX) + checkPos[i] < 0 || (shapePos[i] % board.lengthX) + checkPos[i] >= board.lengthX){
+				if ((shapePos[i] % board.lengthX) + checkPos[i] < 0 || (shapePos[i] % board.lengthX) + checkPos[i] >= board.lengthX){
 					collisionData.horizontal = false;
 				}
 			
