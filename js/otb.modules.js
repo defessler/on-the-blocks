@@ -77,7 +77,6 @@
 					this.el[i] = M.createElements("gameBoard", "sBlock", x, y);
 					//this.el[i].innerHTML = i;
 				}
-				console.log('defined');
 			}
 
 		};
@@ -115,12 +114,29 @@
 		return GameBoard;
 	});
 
-	OTB.define("collision", function(){
+	OTB.define("pos", function (){
+		function getPosition(value, width){
+			var pos = {
+				x: 0,
+				y: 0
+			};
+			width = width || 10;
 
-		function collisionCheck(shapePos, checkPos, board, checkDir){
-			checkDir = checkDir || "";
+			pos.x = value % width;
+			pos.y = Math.floor(value / width);
+
+			return pos;
+		}
+
+		return getPosition;
+	});
+
+	OTB.define("collision", ['pos'], function(M){
+
+		function collisionCheck(shapePos, checkPos, board){
 
 			var rotateOffset = 0;
+			var pos = {};
 			var collisionData = {
 				vertical: true,
 				horizontal: true,
@@ -129,8 +145,11 @@
 			};
 
 			for(var i = 0; i < checkPos.length; i += 1){
-
-				if((shapePos[i] / board.lengthX) + 1 >= board.lengthY){
+				pos = M.pos(shapePos[i], board.lengthX);
+				check = M.pos(checkPos[i], board.lengthX);
+				nPos = M.pos(shapePos[i] + checkPos[i], board.lengthX);
+				pPos = M.pos(shapePos[i > 0 ? i-1 : i] + checkPos[i > 0 ? i-1 : i], board.lengthX);
+				if(pos.y + 1 >= board.lengthY){
 					collisionData.vertical = false;
 				}
 
@@ -140,16 +159,22 @@
 					collisionData.rotate = false;
 				}
 				
-				if ((shapePos[i] % board.lengthX) + checkPos[i] < 0 || (shapePos[i] % board.lengthX) + checkPos[i] >= board.lengthX){
+				if (pos.x + checkPos[i] < 0 || pos.x + checkPos[i] >= board.lengthX){
 					collisionData.horizontal = false;
 				}
 			
-				rotateOffset = (shapePos[i] % board.lengthX) + (checkPos[i] % board.lengthX);
-
-				if(rotateOffset === -1 && (shapePos[i] % board.lengthX) >= 0){
-					collisionData.rotateOffset = 1;
-				}else if(rotateOffset === 10 && (shapePos[i] % board.lengthX) === 9){
-					collisionData.rotateOffset = -1;
+				if(pos.x > nPos.x + 4){
+					if(pPos.y !== nPos.y){
+						collisionData.rotateOffset = -1;
+					}else{
+						collisionData.rotateOffset -= 1;
+					}
+				}else if(pos.x < nPos.x - 4 || nPos.x < 0){
+					if(pPos.y !== nPos.y){
+						collisionData.rotateOffset = 1;
+					}else{
+						collisionData.rotateOffset += 1;
+					}
 				}
 				
 			}
@@ -193,7 +218,34 @@
 						data.cursor[i] !== null &&
 						data.cursor[i] > 0
 					){
-						data.el[i].setAttribute("class", "sBlock");
+						if(data.cursor[i] === 1){
+							data.el[i].setAttribute("class", "yBlock");
+						}
+
+						if(data.cursor[i] === 2){
+							data.el[i].setAttribute("class", "gBlock");
+						}
+
+						if(data.cursor[i] === 3){
+							data.el[i].setAttribute("class", "bBlock");
+						}
+
+						if(data.cursor[i] === 4){
+							data.el[i].setAttribute("class", "rBlock");
+						}
+
+						if(data.cursor[i] === 5){
+							data.el[i].setAttribute("class", "oBlock");
+						}
+
+						if(data.cursor[i] === 6){
+							data.el[i].setAttribute("class", "lbBlock");
+						}
+
+						if(data.cursor[i] === 7){
+							data.el[i].setAttribute("class", "wBlock");
+						}
+						
 					}else{
 						data.el[i].setAttribute("class", "blank");
 					}

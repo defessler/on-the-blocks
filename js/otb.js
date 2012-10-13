@@ -6,8 +6,6 @@
 		window.gBoard = gBoard;
 		// This code is just test code to see how changing the values work.
 		(function(){
-			shape2 =[{}];
-
 			var shape = [
 				{
 					name: 'blockL',
@@ -108,6 +106,9 @@
 			var store = true;
 			var j;
 			var test = [];
+			var p = Math.floor(Math.random() * 7);
+
+
 			document.onkeydown = function(e){
 				keyCode = e.keyCode;
 			};
@@ -119,20 +120,21 @@
 				requestAnimationFrame(animate);
 
 				count += 1;
-				if(count >= 10){
-					collisionData = M.collision(shape[6].currentPos, [10, 10, 10, 10], gBoard);
+				if(count >= 20){
+					collisionData = M.collision(shape[p].currentPos, [10, 10, 10, 10], gBoard);
 
 					if(collisionData.vertical){
-						for(i = 0; i < shape[6].currentPos.length; i += 1){
-							shape[6].currentPos[i] += 10;
+						for(i = 0; i < shape[p].currentPos.length; i += 1){
+							shape[p].currentPos[i] += 10;
 						}
 					}else{
 						gBoard.cursor.apply();
 						offset = 0;
-						shape[6].currentPos = shape[6].originalPos.slice(0);
+						shape[p].currentPos = shape[p].originalPos.slice(0);
 						collisionData.vertical = true;
+						p = Math.floor(Math.random() * 7);
 					}
-					//console.log(Math.floor(shape[6] / gBoard.lengthX-2));
+					//console.log(Math.floor(shape[p] / gBoard.lengthX-2));
 					count = 0;
 				}
 				for(i = 0; i < gBoard.length; i += 1){
@@ -172,44 +174,40 @@
 					for(i = (clearRows.row[j]*10)+9; i >= 0; i -= 1){
 						gBoard[i] = gBoard[i-10];
 					}
-					
-					//gBoard.unshift(j*10);
-					delete clearRows.row[j];
 				}
-
-				console.log(clearRows.row, test);
+				clearRows.row.length = 0;
 
 				count2 += 1;
 				if(count2 >= 5){
 					count2 = 0;
 
 					if(keyCode === 37){ //left
-						collisionData = M.collision(shape[6].currentPos, [-1, -1, -1, -1], gBoard);
-						//console.log(shape[6].currentPos);
+						collisionData = M.collision(shape[p].currentPos, [-1, -1, -1, -1], gBoard);
+						//console.log(shape[p].currentPos);
 						if(collisionData.horizontal){
-							for(i = 0; i < shape[6].currentPos.length; i += 1){
-								shape[6].currentPos[i] -= 1;
+							for(i = 0; i < shape[p].currentPos.length; i += 1){
+								shape[p].currentPos[i] -= 1;
 							}
 						}
 
 					}
 					if(keyCode === 39){ //right
-						collisionData = M.collision(shape[6].currentPos, [1, 1, 1, 1], gBoard);
-						//console.log(shape[6].currentPos);
+						collisionData = M.collision(shape[p].currentPos, [1, 1, 1, 1], gBoard);
+						//console.log(shape[p].currentPos);
 						if(collisionData.horizontal){
-							for(i = 0; i < shape[6].currentPos.length; i += 1){
-								shape[6].currentPos[i] += 1;
+							for(i = 0; i < shape[p].currentPos.length; i += 1){
+								shape[p].currentPos[i] += 1;
 							}
 						}
 					}
 
 					if(keyCode === 38){ //up
-						collisionData = M.collision(shape[6].currentPos, shape[6].rotateOffsets[offset], gBoard);
+						collisionData = M.collision(shape[p].currentPos, shape[p].rotateOffsets[offset], gBoard);
 
 						if(collisionData.rotate){
-							for(i = 0; i < shape[6].currentPos.length; i += 1){
-								shape[6].currentPos[i] +=  shape[6].rotateOffsets[offset][i];
-								shape[6].currentPos[i] += collisionData.rotateOffset;
+							for(i = 0; i < shape[p].currentPos.length; i += 1){
+								shape[p].currentPos[i] +=  shape[p].rotateOffsets[offset][i];
+								shape[p].currentPos[i] += collisionData.rotateOffset;
 							}
 
 							offset += 1;
@@ -222,8 +220,8 @@
 
 				}
 				gBoard.cursor.clear();
-				for(i = 0; i < shape[6].currentPos.length; i +=1){
-					gBoard.cursor[shape[6].currentPos[i]] = 1;
+				for(i = 0; i < shape[p].currentPos.length; i +=1){
+					gBoard.cursor[shape[p].currentPos[i]] = p+1;
 				}
 				M.draw(gBoard, "dom");
 			}

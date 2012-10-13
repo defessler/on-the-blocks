@@ -48,8 +48,15 @@ table {
 }
 
 /* My Styles */
-body{background:#ccc;}
+body{background:url(img/bg.png) #FFF;}
 
-#gameBoard{background:#000; border:1px solid #000; box-shadow:0 0 5px #333; height:600px; margin:20px auto; width:300px;}
+#gameBoard{background:#000; border:10px solid #55F; border-radius: 10px; box-shadow:0 0 40px #000; height:600px; margin:40px auto; width:300px;}
 .blank{color: #FFF;}
 .sBlock{background:url('img/sBlock.png') no-repeat; height:30px; width:30px;}
+.bBlock{background:url('img/bBlock.png') no-repeat; height:30px; width:30px;}
+.gBlock{background:url('img/gBlock.png') no-repeat; height:30px; width:30px;}
+.lbBlock{background:url('img/lbBlock.png') no-repeat; height:30px; width:30px;}
+.oBlock{background:url('img/oBlock.png') no-repeat; height:30px; width:30px;}
+.rBlock{background:url('img/rBlock.png') no-repeat; height:30px; width:30px;}
+.wBlock{background:url('img/wBlock.png') no-repeat; height:30px; width:30px;}
+.yBlock{background:url('img/yBlock.png') no-repeat; height:30px; width:30px;}
