@@ -176,8 +176,13 @@
 						collisionData.rotateOffset += 1;
 					}
 				}
+
+				if(nPos.y >= 20){
+					rotateOffset = -10;
+				}
 				
 			}
+			collisionData.rotateOffset = collisionData.rotateOffset + rotateOffset;
 
 			return collisionData;
 		}
