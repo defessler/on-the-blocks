@@ -131,9 +131,30 @@
 		return getPosition;
 	});
 
+	OTB.define("setKey", function(){
+		function keyConfig (keyWord, keyCode) {
+			var keys = {};
+
+			document.onkeydown = function(e){
+				if(e.keyCode === keyCode){ //left
+					keys[keyWord] = true;
+				}
+			};
+			document.onkeyup = function(e){
+				if(e.keyCode ===  keyCode){ //left
+					keys[keyWord] = false;
+				}
+			};
+
+			window['KEYS'] = keys;
+		}
+
+		return keyConfig;
+	});
+
 	OTB.define("collision", ['pos'], function(M){
 
-		function collisionCheck(shapePos, checkPos, board){
+		function collisionCheck (shapePos, checkPos, board){
 
 			var rotateOffset = 0;
 			var pos = {};
@@ -145,10 +166,12 @@
 			};
 
 			for(var i = 0; i < checkPos.length; i += 1){
+
 				pos = M.pos(shapePos[i], board.lengthX);
 				check = M.pos(checkPos[i], board.lengthX);
 				nPos = M.pos(shapePos[i] + checkPos[i], board.lengthX);
 				pPos = M.pos(shapePos[i > 0 ? i-1 : i] + checkPos[i > 0 ? i-1 : i], board.lengthX);
+
 				if(pos.y + 1 >= board.lengthY){
 					collisionData.vertical = false;
 				}

@@ -1,11 +1,13 @@
 (function(){
 	OTB.require(["GameBoard", "draw", "collision"], function(M) {
 		var gBoard = new M.GameBoard(10, 20);
-		var count = 0, count2 = 0;
+		var count = 0, count2 = 0, count3 = 20;
 		var shape = OTB.shape;
 
 		// This code is just test code to see how changing the values work.
 		(function(){
+
+			window.gBoard = gBoard;
 			var i = 0;
 			var j = 0;
 			var offset = 0;
@@ -46,6 +48,10 @@
 					key.up = false;
 				}
 			};
+
+			function clearRow(){
+				
+			}
 
 			function animate(){
 				requestAnimationFrame(animate);
@@ -96,12 +102,34 @@
 					}
 					
 				}
-				for(j = 0; j < clearRows.row.length; j += 1){
-					for(i = (clearRows.row[j]*10)+9; i >= 0; i -= 1){
-						gBoard[i] = gBoard[i-10];
+				if(clearRows.row.length > 0){
+					count3 -= 1;
+					for(j = 0; j < clearRows.row.length; j += 1){
+						for(i = (clearRows.row[j]*10)+9; i >= (clearRows.row[j]*10); i -= 1){
+							gBoard.el[i].style.opacity = count3 / 20;
+						}
+					}
+					if(count3 <= 0){
+						count3 = 20;
+
+						for(j = 0; j < clearRows.row.length; j += 1){
+							for(i = (clearRows.row[j]*10)+9; i >= 0; i -= 1){
+								gBoard[i] = gBoard[i-10];
+							}
+						}
+
+						for(j = 0; j < clearRows.row.length; j += 1){
+							for(i = (clearRows.row[j]*10)+9; i >= (clearRows.row[j]*10); i -= 1){
+								gBoard.el[i].style.opacity = "1";
+							}
+							delete clearRows.row[j];
+						}
+						
 					}
 				}
-				clearRows.row.length = 0;
+
+				
+				
 
 				count2 += 1;
 				if(count2 >= 5){
@@ -126,6 +154,8 @@
 					}
 
 					if(key.up){ //up
+						key.up = false;
+
 						collisionData = M.collision(shape[p].currentPos, shape[p].rotateOffsets[offset], gBoard);
 
 						if(collisionData.rotate){
