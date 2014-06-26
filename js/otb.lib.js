@@ -7,17 +7,13 @@ var OTB = (function(){
 	// Arguments:
 	// name = name of module, deps = other modules this relies on, factory = function associated with module.
 	var define = function(name, deps, factory) {
-
-		// Takes arguments object and turns it into an array so that array methods are available.
-		var args = Array.prototype.slice.call(arguments);
-
 		// name will always be the first argument, remove first argument from array and assign to name.
-		name = args.shift();
+		name = arguments[0];
 		// factory will always be the last argument, remove last argument from array and assign to factory.
-		factory = args.pop();
+		factory = arguments[arguments.length - 1];
 		// deps is optional. At this point it would be the only argument remaining. If it doesn't exist
 		// create empty array.
-		deps = args.pop() || [];
+		deps = arguments.length > 2 ? arguments[1] : [];
 
 		// Save module in "modules" using "name" from above.
 		// Send deps and function to require for processing.
